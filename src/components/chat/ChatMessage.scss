@@ -1,0 +1,23 @@
+.message {
+  display: flex;
+  align-items: center;
+  padding: 15px;
+  color: white;
+
+  .messageInfo {
+    padding: 10px 10px 5px 10px;
+    h4 {
+      margin-top: 0;
+      margin-bottom: 0;
+    }
+    p {
+      margin-top: 0;
+      margin-bottom: 0;
+    }
+  }
+  .messageTimestamp {
+    color: #7b7c85;
+    margin-left: 20px;
+    font-size: 16px;
+  }
+}
