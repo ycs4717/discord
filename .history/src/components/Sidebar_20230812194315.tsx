@@ -17,7 +17,7 @@ const Sidebar = () => {
   useEffect(() => {
     onSnapshot(q, (querySnapshot) => {
       const channelsResults = [];
-      querySnapshot.docs.forEach((doc) => console.log(doc));
+      querySnapshot.docs.forEach((doc) => console.log(doc.data()));
     });
   }, []);
 

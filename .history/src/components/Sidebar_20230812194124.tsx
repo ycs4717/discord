@@ -15,11 +15,8 @@ const Sidebar = () => {
   const q = query(collection(db, "channels"));
 
   useEffect(() => {
-    onSnapshot(q, (querySnapshot) => {
-      const channelsResults = [];
-      querySnapshot.docs.forEach((doc) => console.log(doc));
-    });
-  }, []);
+onSnapshot(q, (querySnapshot) => {
+  }),} []);
 
   return (
     <div className="sidebar">
