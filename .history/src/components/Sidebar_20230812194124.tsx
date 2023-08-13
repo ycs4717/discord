@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import "./Sidebar.scss";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import AddIcon from "@mui/icons-material/Add";
@@ -8,21 +8,15 @@ import HeadsetMicIcon from "@mui/icons-material/HeadsetMic";
 import SettingsIcon from "@mui/icons-material/Settings";
 import { auth, db } from "../firebase";
 import { useAppSelector } from "../app/hooks";
-import useCollection from "../hooks/useCollection";
-import { addDoc, collection } from "firebase/firestore";
+import { collection, onSnapshot, query } from "firebase/firestore";
 
 const Sidebar = () => {
-  const user = useAppSelector((state) => state.user.user);
-  const { documents: channels } = useCollection("channels");
+  const user = useAppSelector((state) => state.user);
+  const q = query(collection(db, "channels"));
 
-  const addChannel = async () => {
-    let channelName: string | null = prompt("새로운 채널을 작성합니다.");
-    if (channelName) {
-      await addDoc(collection(db, "channels"), {
-        channelName: channelName,
-      });
-    }
-  };
+  useEffect(() => {
+onSnapshot(q, (querySnapshot) => {
+  }),} []);
 
   return (
     <div className="sidebar">
@@ -40,25 +34,20 @@ const Sidebar = () => {
           <h3>Discrord</h3>
           <ExpandMoreIcon />
         </div>
-
         <div className="sidebarChannels">
           <div className="sidebarChannelsHeader">
             <div className="sidebarHeader">
               <ExpandMoreIcon />
               <h4>プログラミング</h4>
             </div>
-            <AddIcon className="sidebarAddIcon" onClick={() => addChannel()} />
+            <AddIcon className="sidebarAddIcon" />
           </div>
           <div className="sidebarChannelList">
-            {channels.map((channel) => (
-              <SidebarChannel
-                channel={channel}
-                id={channel.id}
-                key={channel.id}
-              />
-            ))}
+            <SidebarChannel />
+            <SidebarChannel />
+            <SidebarChannel />
+            <SidebarChannel />
           </div>
-
           <div className="sidebarFooter">
             <div className="sidebarAccount">
               <img src={user?.photo} alt="" onClick={() => auth.signOut()} />
