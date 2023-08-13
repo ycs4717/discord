@@ -1,17 +1,20 @@
 import "./Chat.scss";
 
 import React from "react";
-import ChatHeader from "./chat/ChatHeader";
+import ChatHeader from "./ChatHeader";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import CardGiftcardIcon from "@mui/icons-material/CardGiftcard";
 import GifIcon from "@mui/icons-material/Gif";
 import EmojiEmotionsIcon from "@mui/icons-material/EmojiEmotions";
-import ChatMessage from "./chat/ChatMessage";
+import ChatMessage from "./ChatMessage";
+import { useAppSelector } from "../../app/hooks";
 
 const Chat = () => {
+  const channelName = useAppSelector((state) => state.channel.channelName);
+
   return (
     <div className="chat">
-      <ChatHeader />
+      <ChatHeader channelName={channelName} />
       <div className="chatMessage">
         <ChatMessage />
         <ChatMessage />
