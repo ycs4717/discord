@@ -20,6 +20,7 @@ import {
   serverTimestamp,
 } from "firebase/firestore";
 import { db } from "../../firebase";
+import useSubCollection from "../../hooks/useSubCollection";
 
 interface Messages {
   timestamp: Timestamp;
@@ -34,36 +35,10 @@ interface Messages {
 
 const Chat = () => {
   const [inputText, setInputText] = useState<string>("");
-  const [messages, setMessages] = useState<Messages[]>([]);
   const channelName = useAppSelector((state) => state.channel.channelName);
   const channelId = useAppSelector((state) => state.channel.channelId);
   const user = useAppSelector((state) => state.user.user);
-
-  useEffect(() => {
-    let collectionRef = collection(
-      db,
-      "channels",
-      String(channelId),
-      "messages"
-    );
-
-    const collectionRefOrderBy = query(
-      collectionRef,
-      orderBy("timestamp", "desc")
-    );
-
-    onSnapshot(collectionRefOrderBy, (snapshot) => {
-      let results: Messages[] = [];
-      snapshot.docs.forEach((doc) => {
-        results.push({
-          timestamp: doc.data().timestamp,
-          message: doc.data().message,
-          user: doc.data().user,
-        });
-      });
-      setMessages(results);
-    });
-  }, [channelId]);
+  const { subDocuments: messages } = useSubCollection("channels", "messages");
 
   const sendMessage = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
