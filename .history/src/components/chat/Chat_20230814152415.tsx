@@ -19,38 +19,31 @@ import { db } from "../../firebase";
 import useSubCollection from "../../hooks/useSubCollection";
 
 const Chat = () => {
-  // 메시지 입력을 위한 상태
   const [inputText, setInputText] = useState<string>("");
-
-  // 채널 이름, ID, 사용자 정보를 위한 Redux 선택자
   const channelName = useAppSelector((state) => state.channel.channelName);
   const channelId = useAppSelector((state) => state.channel.channelId);
   const user = useAppSelector((state) => state.user.user);
-
-  // 메시지를 가져오기 위한 사용자 정의 훅 사용
   const { subDocuments: messages } = useSubCollection("channels", "messages");
-
-  // 채팅 메시지 컨테이너를 위한 참조
   const chatMessageRef = useRef<HTMLDivElement | null>(null);
 
-  // 메시지를 보내기 위한 함수
+  //여기서부터 수정
+  const [errorMessage, setErrorMessage] = useState<string | null>(null); // 에러 메시지 상태 추가
+  //수정 끝
+
   const sendMessage = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
-    // 입력이 비어 있는지 확인 후, 비어 있으면 알림 표시
+    // 입력 값이 비어 있는지 확인
     if (!inputText.trim()) {
-      window.alert("뭐라도 입력해요");
+      setErrorMessage("뭐라도 입력해요");
       return;
     }
 
-    // 메시지를 Firebase에 추가하는 로직
     const collectionRef: CollectionReference<DocumentData> = collection(
       db,
       "channels",
       String(channelId),
       "messages"
     );
-
     const docRef: DocumentReference<DocumentData> = await addDoc(
       collectionRef,
       {
@@ -59,12 +52,9 @@ const Chat = () => {
         user: user,
       }
     );
-
-    // 메시지 전송 후 입력 필드 초기화
     setInputText("");
+    setErrorMessage(null);
   };
-
-  // 최근 메시지로 스크롤 하는 효과
   useEffect(() => {
     if (chatMessageRef.current) {
       chatMessageRef.current.scrollTop = chatMessageRef.current.scrollHeight;

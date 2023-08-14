@@ -33,24 +33,24 @@ const Chat = () => {
   // 채팅 메시지 컨테이너를 위한 참조
   const chatMessageRef = useRef<HTMLDivElement | null>(null);
 
-  // 메시지를 보내기 위한 함수
+// 메시지를 보내기 위한 함수
+const sendMessage = async (e: React.FormEvent<HTMLFormElement>) => {
+  e.preventDefault();
+
   const sendMessage = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
-    // 입력이 비어 있는지 확인 후, 비어 있으면 알림 표시
+    // 입력 값이 비어 있는지 확인
     if (!inputText.trim()) {
       window.alert("뭐라도 입력해요");
       return;
     }
 
-    // 메시지를 Firebase에 추가하는 로직
     const collectionRef: CollectionReference<DocumentData> = collection(
       db,
       "channels",
       String(channelId),
       "messages"
     );
-
     const docRef: DocumentReference<DocumentData> = await addDoc(
       collectionRef,
       {
@@ -59,17 +59,16 @@ const Chat = () => {
         user: user,
       }
     );
-
     // 메시지 전송 후 입력 필드 초기화
     setInputText("");
   };
 
-  // 최근 메시지로 스크롤 하는 효과
-  useEffect(() => {
-    if (chatMessageRef.current) {
-      chatMessageRef.current.scrollTop = chatMessageRef.current.scrollHeight;
-    }
-  }, [messages]);
+// 최근 메시지로 스크롤 하는 효과
+useEffect(() => {
+  if (chatMessageRef.current) {
+    chatMessageRef.current.scrollTop = chatMessageRef.current.scrollHeight;
+  }
+}, [messages]);
 
   return (
     <div className="chat">
