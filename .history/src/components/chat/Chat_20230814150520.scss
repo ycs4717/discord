@@ -1,17 +1,18 @@
 .chat {
   display: flex;
   flex-direction: column;
+  justify-content: space-between; // 이 부분 추가
   flex-grow: 1;
   background-color: #33363d;
   height: 100vh;
-  justify-content: space-between;
 
   .chatMessage {
+    flex-grow: 1; // 이 부분 추가
     display: flex;
     flex-direction: column-reverse;
     overflow-y: scroll;
-    flex-grow: 1;
   }
+
   .chatInput {
     display: flex;
     align-items: center;
@@ -19,7 +20,7 @@
     padding: 15px;
     background-color: #474b53;
     border-radius: 5px;
-    margin: 20;
+    margin: 20px; // 여기에 px 단위 추가
     color: lightgray;
 
     form {

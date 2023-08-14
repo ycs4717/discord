@@ -1,5 +1,5 @@
 import "./Chat.scss";
-import React, { useEffect, useRef, useState } from "react";
+import React, { MouseEvent, useEffect, useRef, useState } from "react";
 import ChatHeader from "./ChatHeader";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import CardGiftcardIcon from "@mui/icons-material/CardGiftcard";
@@ -11,12 +11,27 @@ import {
   CollectionReference,
   DocumentData,
   DocumentReference,
+  Timestamp,
   addDoc,
   collection,
+  onSnapshot,
+  orderBy,
+  query,
   serverTimestamp,
 } from "firebase/firestore";
 import { db } from "../../firebase";
 import useSubCollection from "../../hooks/useSubCollection";
+
+interface Messages {
+  timestamp: Timestamp;
+  message: string;
+  user: {
+    uid: string;
+    photo: string;
+    displayName: string;
+    email: string;
+  };
+}
 
 const Chat = () => {
   const [inputText, setInputText] = useState<string>("");

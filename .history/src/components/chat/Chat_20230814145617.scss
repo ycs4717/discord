@@ -4,14 +4,13 @@
   flex-grow: 1;
   background-color: #33363d;
   height: 100vh;
-  justify-content: space-between;
 
   .chatMessage {
     display: flex;
     flex-direction: column-reverse;
     overflow-y: scroll;
-    flex-grow: 1;
   }
+
   .chatInput {
     display: flex;
     align-items: center;

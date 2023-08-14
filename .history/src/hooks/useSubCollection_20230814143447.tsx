@@ -4,6 +4,8 @@ import { QueryDocumentSnapshot } from "firebase/firestore";
 import {
   onSnapshot,
   collection,
+  DocumentData,
+  CollectionReference,
   Timestamp,
   query,
   orderBy,

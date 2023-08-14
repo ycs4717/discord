@@ -1,17 +1,18 @@
 .chat {
   display: flex;
   flex-direction: column;
+  justify-content: space-between; // 이 부분을 추가
   flex-grow: 1;
   background-color: #33363d;
   height: 100vh;
-  justify-content: space-between;
 
   .chatMessage {
-    display: flex;
-    flex-direction: column-reverse;
+    height: calc(
+      100vh - 80px
+    ); // 80px는 입력창의 대략적인 높이입니다. 실제 높이에 따라 조정이 필요할 수 있습니다.
     overflow-y: scroll;
-    flex-grow: 1;
   }
+
   .chatInput {
     display: flex;
     align-items: center;
@@ -19,7 +20,7 @@
     padding: 15px;
     background-color: #474b53;
     border-radius: 5px;
-    margin: 20;
+    margin: 20px; // 이 부분에서 단위(px)가 빠져 있어서 추가하였습니다.
     color: lightgray;
 
     form {

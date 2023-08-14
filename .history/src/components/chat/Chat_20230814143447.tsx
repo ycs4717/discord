@@ -1,5 +1,5 @@
 import "./Chat.scss";
-import React, { useEffect, useRef, useState } from "react";
+import React, { MouseEvent, useEffect, useState } from "react";
 import ChatHeader from "./ChatHeader";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import CardGiftcardIcon from "@mui/icons-material/CardGiftcard";
@@ -11,12 +11,27 @@ import {
   CollectionReference,
   DocumentData,
   DocumentReference,
+  Timestamp,
   addDoc,
   collection,
+  onSnapshot,
+  orderBy,
+  query,
   serverTimestamp,
 } from "firebase/firestore";
 import { db } from "../../firebase";
 import useSubCollection from "../../hooks/useSubCollection";
+
+interface Messages {
+  timestamp: Timestamp;
+  message: string;
+  user: {
+    uid: string;
+    photo: string;
+    displayName: string;
+    email: string;
+  };
+}
 
 const Chat = () => {
   const [inputText, setInputText] = useState<string>("");
@@ -24,7 +39,6 @@ const Chat = () => {
   const channelId = useAppSelector((state) => state.channel.channelId);
   const user = useAppSelector((state) => state.user.user);
   const { subDocuments: messages } = useSubCollection("channels", "messages");
-  const chatMessageRef = useRef<HTMLDivElement | null>(null);
 
   const sendMessage = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -45,16 +59,11 @@ const Chat = () => {
     );
     setInputText("");
   };
-  useEffect(() => {
-    if (chatMessageRef.current) {
-      chatMessageRef.current.scrollTop = chatMessageRef.current.scrollHeight;
-    }
-  }, [messages]);
 
   return (
     <div className="chat">
       <ChatHeader channelName={channelName} />
-      <div className="chatMessage" ref={chatMessageRef}>
+      <div className="chatMessage">
         {messages.map((message, index) => (
           <ChatMessage
             key={index}
